@@ -1,0 +1,52 @@
+{
+  "name": "sails-solr",
+  "version": "0.1.0",
+  "description": "Solr Adapter for Sails / Waterline",
+  "main": "solrAdapter.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/integration/runner -R spec -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sajov/sails-solr.git"
+  },
+  "keywords": [
+    "solr",
+    "adapter",
+    "sails",
+    "waterline",
+    "sails.js",
+    "plugin"
+  ],
+  "author": "sajov",
+  "license": "ISC",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/sajov/sails-solr/issues"
+  },
+  "homepage": "https://github.com/sajov/sails-solr#readme",
+  "dependencies": {
+    "MD5": "^1.2.1",
+    "async": "^0.9.0",
+    "colors": "^1.1.0",
+    "lodash": "^3.8.0",
+    "node-uuid": "^1.4.3",
+    "solr-hyperquest-client": "^1.0.5"
+  },
+  "devDependencies": {
+    "waterline-adapter-tests": "~0.10.0",
+    "mocha": "*",
+    "captains-log": "~0.11.0"
+  },
+  "waterlineAdapter": {
+    "type": "solr",
+    "interfaces": [
+      "semantic",
+      "queryable"
+    ],
+    "waterlineVersion": "~0.10.0"
+  }
+}
