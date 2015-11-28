@@ -20,7 +20,6 @@ var TestRunner = require('waterline-adapter-tests');
 var Adapter = require('../../solrAdapter');
 
 
-
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
@@ -30,10 +29,10 @@ var interfaces = [
     "associations",
     "sql"
 ];
-var interfaces = ["semantic"];
+// var interfaces = ["semantic"];
 try {
     package = require('../../package.json');
-    interfaces = package['waterlineAdapter'].interfaces;
+    // interfaces = package['waterlineAdapter'].interfaces;
 } catch (e) {
     throw new Error(
         '\n' +
