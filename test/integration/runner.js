@@ -29,10 +29,10 @@ var interfaces = [
     "associations",
     "sql"
 ];
-// var interfaces = ["semantic"];
+var interfaces = ["semantic"]; // 27/25
 try {
     package = require('../../package.json');
-    // interfaces = package['waterlineAdapter'].interfaces;
+    interfaces = package['waterlineAdapter'].interfaces; //35/113
 } catch (e) {
     throw new Error(
         '\n' +
@@ -80,6 +80,18 @@ new TestRunner({
         // single: false, //only one model, avid fq=models_s:COLLECTION query
         // manageCores: true, //create cores
 
+    },
+
+    // Mocha options
+    // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
+    mocha: {
+        grep: /auto-increment/,
+        // skip: /should insert 2 records verififed by find/
+    },
+
+    mochaChainableMethods: {
+        // inverts the above grep
+        invert: true,
     },
 
     // The set of adapter interfaces to test against.
