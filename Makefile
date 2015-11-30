@@ -4,7 +4,7 @@ REPORTER = spec
 XML_FILE = reports/TEST-all.xml
 HTML_FILE = reports/coverage.html
 
-test: test/integration/runner -R spec -b
+test:node test/integration/runner -R spec -b
 
 test-mocha:
 	@NODE_ENV=test mocha \
