@@ -23,13 +23,22 @@ var Adapter = require('../../solrAdapter');
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    "semantic",
-    "queryable",
-    "migratable",
-    "associations",
-    "sql"
+    "semantic",  //18,35
+    "queryable",  //5,91
+    "migratable",  //8,14
+    "associations", //8,14
+    "sql" //6,1
 ];
+// 45 passing (4s)
+// 2 pending
+// 204 failing
 var interfaces = ["semantic"]; // 27/25
+var features = [
+      "crossAdapter",
+      "unique",
+      "autoIncrement.sequential"
+];
+features = [];
 try {
     package = require('../../package.json');
     interfaces = package['waterlineAdapter'].interfaces; //35/113
@@ -49,6 +58,8 @@ try {
 log.info('Testing `' + package.name + '`, a Sails/Waterline adapter.');
 log.info('Running `waterline-adapter-tests` against ' + interfaces.length + ' interfaces...');
 log.info('( ' + interfaces.join(', ') + ' )');
+log.info('Running `waterline-adapter-tests` against ' + features.length + ' features...');
+log.info('( ' + features.join(', ') + ' )');
 console.log();
 log('Latest draft of Waterline adapter interface spec:');
 log('http://links.sailsjs.org/docs/plugins/adapters/interfaces');
@@ -85,6 +96,7 @@ new TestRunner({
     // Mocha options
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
+       // bail: true
         grep: /auto-increment/,
         // skip: /should insert 2 records verififed by find/
     },
@@ -96,7 +108,9 @@ new TestRunner({
 
     // The set of adapter interfaces to test against.
     // (grabbed these from this adapter's package.json file above)
-    interfaces: interfaces
+    interfaces: interfaces,
+
+    features: features,
 
     // Most databases implement 'semantic' and 'queryable'.
     //
