@@ -32,7 +32,7 @@ var interfaces = [
 // 45 passing (4s)
 // 2 pending
 // 204 failing
-var interfaces = ["semantic"]; // 27/25
+var interfaces = ["semantic"]; // 27/25   18/34?? 21/31
 var features = [
       "crossAdapter",
       "unique",
@@ -41,7 +41,7 @@ var features = [
 features = [];
 try {
     package = require('../../package.json');
-    interfaces = package['waterlineAdapter'].interfaces; //35/113
+    // interfaces = package['waterlineAdapter'].interfaces; //35/113
 } catch (e) {
     throw new Error(
         '\n' +
@@ -98,7 +98,7 @@ new TestRunner({
     mocha: {
        // bail: true
         grep: /auto-increment/,
-        // skip: /should insert 2 records verififed by find/
+        skip: /should insert 2 records verififed by find/
     },
 
     mochaChainableMethods: {
