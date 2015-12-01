@@ -23,9 +23,9 @@ var Adapter = require('../../solrAdapter');
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    "semantic",  //18,35
-    "queryable",  //5,91
-    "migratable",  //8,14
+    "semantic", //18,35
+    "queryable", //5,91
+    "migratable", //8,14
     "associations", //8,14
     "sql" //6,1
 ];
@@ -34,13 +34,13 @@ var interfaces = [
 // 204 failing
 var interfaces = ["semantic"]; // 27/25   18/34?? 21/31
 var features = [
-      "crossAdapter",
-      "unique",
-      "autoIncrement.sequential"
+    "crossAdapter",
+    "unique",
+    "autoIncrement.sequential"
 ];
 features = [];
 try {
-    package = require('../../package.json');
+    // package = require('../../package.json');
     // interfaces = package['waterlineAdapter'].interfaces; //35/113
 } catch (e) {
     throw new Error(
@@ -96,8 +96,15 @@ new TestRunner({
     // Mocha options
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
-       // bail: true
+        // bail: true
         grep: /auto-increment/,
+        // grep: /create/,
+        // grep: /createEach/,
+        // grep: /destroy/,
+        // grep: /find/,
+        // grep: /findOne/,
+        // grep: /findOreCreate/,
+        // grep: /findOreCreateEach/,
         skip: /should insert 2 records verififed by find/
     },
 
