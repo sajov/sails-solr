@@ -111,8 +111,11 @@ new TestRunner({
 
     mochaChainableMethods: {
         // inverts the above grep
-        // invert: true,
+        invert: true,
     },
+
+    // Return code != 0 if any test failed
+    failOnError: false,
 
     // The set of adapter interfaces to test against.
     // (grabbed these from this adapter's package.json file above)
