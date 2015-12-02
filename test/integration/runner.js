@@ -97,7 +97,8 @@ new TestRunner({
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
         // bail: true
-        grep: /auto-increment/,
+        grep: /update/,
+        // grep: /auto-increment/,
         // grep: /create/,
         // grep: /createEach/,
         // grep: /destroy/,
@@ -105,12 +106,12 @@ new TestRunner({
         // grep: /findOne/,
         // grep: /findOreCreate/,
         // grep: /findOreCreateEach/,
-        skip: /should insert 2 records verififed by find/
+        // skip: /should insert 2 records verififed by find/
     },
 
     mochaChainableMethods: {
         // inverts the above grep
-        invert: true,
+        // invert: true,
     },
 
     // The set of adapter interfaces to test against.
