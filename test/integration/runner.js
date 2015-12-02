@@ -32,7 +32,7 @@ var interfaces = [
 // 45 passing (4s)
 // 2 pending
 // 204 failing
-var interfaces = ["semantic"]; // 27/25   18/34?? 21/31
+var interfaces = ["semantic"]; // 27/25
 var features = [
     "crossAdapter",
     "unique",
