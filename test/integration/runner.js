@@ -97,8 +97,8 @@ new TestRunner({
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
         // bail: true
-        grep: /update/,
-        // grep: /auto-increment/,
+        // grep: /update/,
+        grep: /auto-increment/,
         // grep: /create/,
         // grep: /createEach/,
         // grep: /destroy/,
