@@ -12,33 +12,36 @@
 /**
  * Module dependencies
  */
-
 var util = require('util');
 var mocha = require('mocha');
 var log = new(require('captains-log'))();
 var TestRunner = require('waterline-adapter-tests');
 var Adapter = require('../../solrAdapter');
 
-
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    "semantic", //18,35
-    "queryable", //5,91
-    "migratable", //8,14
-    "associations", //8,14
-    "sql" //6,1
+    "semantic", //18,35  32/20
+    // "queryable", //5,91  7/89
+    // "migratable", //8,14  8,14
+    // "associations", //8,14  25/45
+    // "sql" //6,1  6/1
 ];
-// 45 passing (4s)
+// var interfaces = [];
+// 45 passing (4s)   78
 // 2 pending
-// 204 failing
-var interfaces = ["semantic"]; // 27/25
+// 204 failing 187
+
 var features = [
-    "crossAdapter",
-    "unique",
-    "autoIncrement.sequential"
-];
-features = [];
+    // "autoIncrement", // 0/2
+    // "autoIncrement.sequential", // 0/3
+    // "compositePrimaryKey", // 1/1
+    // "compositeUnique", // 1/1
+    // "crossAdapter", // 25/41
+    // "spatial", // 0/2
+    // "unique", // 0/4
+]; // 25/42     27/54
+// features = [];
 try {
     // package = require('../../package.json');
     // interfaces = package['waterlineAdapter'].interfaces; //35/113
@@ -51,10 +54,6 @@ try {
     );
 }
 
-
-
-
-
 log.info('Testing `' + package.name + '`, a Sails/Waterline adapter.');
 log.info('Running `waterline-adapter-tests` against ' + interfaces.length + ' interfaces...');
 log.info('( ' + interfaces.join(', ') + ' )');
@@ -64,11 +63,6 @@ console.log();
 log('Latest draft of Waterline adapter interface spec:');
 log('http://links.sailsjs.org/docs/plugins/adapters/interfaces');
 console.log();
-
-
-
-
-
 
 /**
  * Integration Test Runner
@@ -90,13 +84,13 @@ new TestRunner({
         port: 8983,
         // single: false, //only one model, avid fq=models_s:COLLECTION query
         // manageCores: true, //create cores
-
     },
 
     // Mocha options
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
-        // bail: true
+        reporter: 'list',
+        bail: false,
         // grep: /update/,
         grep: /auto-increment/,
         // grep: /create/,
@@ -116,12 +110,12 @@ new TestRunner({
 
     // Return code != 0 if any test failed
     failOnError: false,
+    features: features,
 
     // The set of adapter interfaces to test against.
     // (grabbed these from this adapter's package.json file above)
     interfaces: interfaces,
 
-    features: features,
 
     // Most databases implement 'semantic' and 'queryable'.
     //
