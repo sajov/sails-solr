@@ -1,4 +1,5 @@
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
+![Solr_Logo_on_white@2x.png](http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.pdf)
 
 # sails-solr
 
