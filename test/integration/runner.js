@@ -21,8 +21,8 @@ var Adapter = require('../../solrAdapter');
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    // "semantic", //18,35  32/20     => 52
-    "queryable", //5,91  7/89   9/87  22/77
+    "semantic", //18,35  32/20     => 52
+    // "queryable", //5,91  7/89   9/87  22/77
     // "migratable", //8,14  8,14
     // "associations", //8,14  25/45
     // "sql" //6,1  6/1
