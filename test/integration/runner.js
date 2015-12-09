@@ -22,9 +22,9 @@ var Adapter = require('../../solrAdapter');
 var package = {};
 var interfaces = [
     "semantic", //18,35  32/20     => 52
-    // "queryable", //5,91  7/89   9/87  22/77
+    // "queryable", //5,91  7/89   9/87  22/77  23/73
     // "migratable", //8,14  8,14
-    // "associations", //8,14  25/45
+    // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
 ];
 // var interfaces = [];
