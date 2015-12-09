@@ -21,9 +21,9 @@ var Adapter = require('../../solrAdapter');
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    "semantic", //18,35  32/20     => 52
+    // "semantic", //18,35  32/20     => 52
     // "queryable", //5,91  7/89   9/87  22/77  23/73
-    // "migratable", //8,14  8,14
+    "migratable", //8,14  8,14     14/
     // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
 ];
@@ -90,7 +90,7 @@ new TestRunner({
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
         reporter: 'list',
-        bail: false,
+        bail: true,
         // grep: /update/,
         grep: /auto-increment/,
         // grep: /create/,
@@ -109,7 +109,7 @@ new TestRunner({
     },
 
     // Return code != 0 if any test failed
-    failOnError: false,
+    failOnError: true,
     features: features,
 
     // The set of adapter interfaces to test against.
