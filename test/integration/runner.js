@@ -91,6 +91,7 @@ new TestRunner({
     mocha: {
         reporter: 'list',
         bail: true,
+        failOnError: false,
         // grep: /update/,
         grep: /auto-increment/,
         // grep: /create/,
