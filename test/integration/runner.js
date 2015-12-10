@@ -82,6 +82,10 @@ new TestRunner({
         host: 'localhost',
         core: 'schemaless',
         port: 8983,
+        debugAdapter: false,
+        debugCollection: false,
+        debugQuery: false,
+        debugSolr: false
         // single: false, //only one model, avid fq=models_s:COLLECTION query
         // manageCores: true, //create cores
     },
