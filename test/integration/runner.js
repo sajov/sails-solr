@@ -21,9 +21,9 @@ var Adapter = require('../../solrAdapter');
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    "semantic", //18,35  32/20     => 52
+    "semantic", //18,35  32/20     => 53!!!
+    // "migratable", //8,14  8,14     14/??   19/1   21/1!!!!
     // "queryable", //5,91  7/89   9/87  22/77  23/73
-    "migratable", //8,14  8,14     14/??   19/1
     // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
 ];
@@ -97,8 +97,10 @@ new TestRunner({
         bail: true,
         failOnError: false,
         // grep: /update/,
+        // grep: /teardown and migrate existing data/,
         // grep: /auto-increment/,
-        grep: ['primaryKey', 'auto-increment', 'PK']
+        // grep: ['teardown and migrate existing data', 'auto-increment', 'PK']
+        // grep: ['primaryKey', 'auto-increment', 'PK']
         // grep: /create/,
         // grep: /createEach/,
         // grep: /destroy/,
@@ -106,6 +108,7 @@ new TestRunner({
         // grep: /findOne/,
         // grep: /findOreCreate/,
         // grep: /findOreCreateEach/,
+        // skip: /teardown and migrate existing data/
         // skip: /should insert 2 records verififed by find/
     },
 
