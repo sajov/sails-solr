@@ -22,7 +22,7 @@ var Adapter = require('../../solrAdapter');
 var package = {};
 var interfaces = [
     "semantic", //18,35  32/20     => 53!!!
-    // "migratable", //8,14  8,14     14/??   19/1   21/1!!!!
+    "migratable", //8,14  8,14     14/??   19/1   21/1!!!!
     // "queryable", //5,91  7/89   9/87  22/77  23/73
     // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
@@ -35,7 +35,7 @@ var interfaces = [
 var features = [
     // "autoIncrement", // 0/2
     // "autoIncrement.sequential", // 0/3
-    // "compositePrimaryKey", // 1/1
+    // "compositePrimaryKey", // 1/1   1/2
     // "compositeUnique", // 1/1
     // "crossAdapter", // 25/41
     // "spatial", // 0/2
@@ -93,7 +93,7 @@ new TestRunner({
     // Mocha options
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
-        reporter: 'list',
+        // reporter: 'list',
         bail: true,
         failOnError: false,
         // grep: /update/,
