@@ -213,6 +213,14 @@ describe('registerConnection', function() {
         });
     });
 
+    it('should drop all data', function(done) {
+        Adapter.drop('schemaless', 'thingTable', {}, function(err, response) {
+            console.log('response', response);
+            assert(!err);
+            done();
+        });
+    });
+
     // e.g.
     // it('should create a mysql connection pool', function () {})
     // it('should create an HTTP connection pool', function () {})
