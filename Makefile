@@ -36,3 +36,7 @@ after_script:
 
 clean:
 	rm -rf ./coverage
+
+kickstart:
+	cd node_modules/solr-hyperquest-client/bin/ && ./install-solr.sh
+

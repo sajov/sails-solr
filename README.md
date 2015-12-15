@@ -1,7 +1,6 @@
-![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
-![Solr_Logo_on_white.pdf](http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.pdf)
+![](http://i.imgur.com/RIvu9.png | width=50)
 
-# sails-solr
+# <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png"width="100"/> waterline-solr
 
 Provides easy access to `solr` from Sails.js & Waterline.
 
@@ -10,44 +9,355 @@ This module is a Waterline/Sails adapter, an early implementation of a rapidly-d
 Strict adherence to an adapter specification enables the (re)use of built-in generic test suites, standardized documentation, reasonable expectations around the API for your users, and overall, a more pleasant development experience for everyone.
 
 
+## Table of Contents
+
+* [Supported Interfaces](#supported-interfaces)
+* [Installation](#installation)
+* [Getting Started](introduction/getting-started.md)
+* [Models](models/models.md)
+  * [Data types & attribute properties](models/data-types-attributes.md)
+  * [Configuration](models/configuration.md)
+* [Queries](queries/query.md)
+  * [Query Language](queries/query-language.md)
+  * [Query Methods](queries/query-methods.md)
+* [How Solr is used](#how-solr-is-used)
+* [Testing](testing/testing.md)
+* [Integration](integration/integration.md)
+  * [Sails](integration/sails.md)
+* [Examples](examples/examples.md)
+* [Roadmap](ROADMAP.md)
+* [Contributing](CONTRIBUTING.md)
+
+### Supported Interfaces
+> Implements:
+> - [Semantic](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#semantic-interface)
+>   - .create()
+>   - .createEach()
+>   - .find()
+>   - .count()
+>   - .update()
+>   - .destroy()
+> - [Queryable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)[![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema)
+> - [Migratable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)
+>   - .define()
+>   - .describe()
+>   - .drop()
+> - [Iterable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#iterable-interface)
+>   - .stream()
+> - Non-standard
+>   - .query()
+
+| Repo          |  Build Status (edge)                  |  Latest Stable Version   |
+|---------------|---------------------------------------|--------------------------|
+| [**solr-hyperquest-client**](http://github.com/sajov/solr-hyperquest-client) | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) | [![Coverage Status](https://coveralls.io/repos/sajov/solr-hyperquest-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/solr-hyperquest-client?branch=master)
+[![Dependency Status](https://david-dm.org/sajov/solr-hyperquest-client.svg)](https://david-dm.org/jsdoc2md/solr-hyperquest-client) |
+
+
 ### Installation
 
 To install this adapter, run:
-
 ```sh
-$ npm install sails-solr
+$ npm install waterline-solr
+```
+
+
+### Getting started with waterline-solr
+To install/start solr if you not have one running
+```
+make kickstart
+```
+
+#### Configuring Connections
+Add the `solr` configuration to the `config/connections.js` file. The basic
+options are as follows:
+
+```javascript
+module.exports.connections = {
+  solr-connection-one: {
+    module : 'waterline-solr',
+    host: 'localhost',
+    port: 8983,
+    core: 'schemaless',
+    schema: true,
+    migrate: 'drop'
+  }
+};
+```
+
+> **Note**: you can define multiple solr connections/cores.
+> By default waterline-solr will run multiple multiple models inside one core `anageCores`. [Connection Options](#connection-options)
+
+#### Configuring Models
+And then change default model configuration to the config/models.js:
+```
+module.exports.models = {
+  connection: 'solr-connection-one',
+  attributes: {
+    name:'string'
+    ...
+  }
+};
+```
+> **Note**: you can add more model based configuartion [Model Options](#model-options) / [Connection Options](#connection-options)
+
+#### Usage
+create a user:
+```
+  User.create({name:'foo'},console)
+```
+find a user:
+```
+  User.find({name:'foo'},console);
+  User.findOne({name:'foo'},console);
+  User.findByName('foo',console);
+```
+> **Note**: See Waterline Documentation 
+> - [Query Language](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-language.md)
+> - [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
+
+
+
+
+
+## Connection Options
+| Params               | Default     | Description                       |
+|:---------------------|:------------|:----------------------------------|
+| host                 | 'localhost' |                                   |
+| port                 | '8983'      |                                   |
+| core                 | 'schemaless'|                                   |
+| manageCores          | true        | create cores if not exists [CoreAdmin](https://cwiki.apache.org/confluence/display/solr/CoreAdmin+API)                                  |
+| schema               | true       | allow `migrate` [drop, alter](https://github.com/balderdashy/sails-docs/blob/master/concepts/ORM/model-settings.md#migrate) schema [manage schema](https://cwiki.apache.org/confluence/display/solr/Managed+Schema+Definition+in+SolrConfig)                                  |
+| single               | false       |  force `manageCores` to create a core for each model                                 |
+| fieldTypeMap         | fieldTypes  |  [Field Type Map](#field-type-map)                                 |
+| useFqParam           | true        |  foce query mapping as `fq=name:foo`param                                |
+| debugAdapter         | false       |                                   |
+| debugCollection      | false       |                                   |
+| debugQuery           | false       |                                   |
+| debugSolr            | false       |                                   |
+
+
+## Model Options
+```
+{
+  attributes: {
+    first_name: {
+      type:'string'
+      // Overwrite per Field
+      schemaDefaultFieldAttributes: {
+        indexed: true,
+        type: 'text_de'
+      }
+    }
+  }
+  // Overwrite per Model
+  schemaDefaultFieldAttributes: {
+    indexed: false
+  }
+}
+```
+
+
+## Field Type Map
+The following table represents mappings between Sails/Waterline model data types and Solr field types:
+
+| Sails/Waterline Type | Solr Type    |
+|:---------------------|:-------------|
+| string               | text_general |
+| text                 | text_general |
+| binary               | text_general |
+| integer              | int          |
+| float                | float        |
+| date                 | date         |
+| time                 | date         |
+| datetime             | date         |
+| boolean              | boolean      |
+| binary               | text_general |
+| array                | text_general |
+| json                 | text_general |
+
+
+> **Note**: You can even define your custom mapping as `fieldTypeMap:` inside
+> connection settings and as model option.
+> If you want a field type explicit mapping use `fieldType` as additional 
+> fieldTypeMapattribute
+
+## Solr default field attributes
+The following table represents Solr field attributes:
+
+| Solr Field Attributes    | Default      |
+|:-------------------------|:-------------|
+| name                     | newField     |
+| type                     | text_general |
+| indexed                  | true         |
+| stored                   | true         |
+| docValues                | false        |
+| sortMissingFirst         | false        |
+| sortMissingLast          | false        |
+| multiValued              | false        |
+| omitNorms                | true         |
+| omitTermFreqAndPositions | false        |
+| omitPositions            | false        |
+| termVectors              | true         |
+| termPositions            | false        |
+| termOffsets              | false        |
+| termPayloads             | false        |
+| required                 | false        |
+| dynamicField             | false        |
+| json                     | text_general |
+| json                     | text_general |
+| json                     | text_general |
+
+
+> **Note**: You can even define your custom field attribute default as `schemaDefaultFieldAttributes:` inside
+> connection settings and as model option.
+> If you want a field attribute explicit you can add this attribute as an additional option inside the Model attribute settings
+
+### Sails/Waterline Model 
+```
+{
+  attributes: {
+    first_name: {
+      type:'string'
+      // Overwrite per Field
+      schemaDefaultFieldAttributes: {
+        indexed: true,
+        type: 'text_de'
+      }
+    }
+  }
+  // Overwrite per Model
+  schemaDefaultFieldAttributes: {
+    indexed: false
+  }
+}
 ```
 
 
 
+### 4.4. Use of indexes
+Apache Cassandra require index on a column that is used in `where` clause of
+`select` statement and unlike other database it will produce and exception if
+the index is missing.
 
-### Usage
+Sails/Waterline allows to set `index` or `unique` properties on model
+attributes. The `waterline-solr` adapter will respect these attributes and it
+will create indexes for attributes with `index` or `unique` attributes set to
+`true`.
 
-This adapter exposes the following methods:
+> **Note**: that solr have no notion of `unique` constraint and
+> the uniqueness has to be enforced either by Sails/Waterline core or in your
+> own code. The `unique` attribute property is considered an alias for `index`
+> and both are treated in the exactly same way.
 
-###### `find()`
-
-+ **Status**
-  + Planned
-
-###### `create()`
-
-+ **Status**
-  + Planned
-
-###### `update()`
-
-+ **Status**
-  + Planned
-
-###### `destroy()`
-
-+ **Status**
-  + Planned
+### 4.5. Search criteria
+Sole only supports subset of operation in selection criteria in
+comparison to relational databases and this section describes what is currently
+supported.
 
 
+#### 4.5.1. Key Pairs
+This is an exact match criteria and it is declared as follows:
 
-### Interfaces
+```javascript
+Model.find({firstName: 'Joe', lastName: 'Doe'});
+```
+
+Created request params:
+
+```
+params: {
+      q: "*:*",
+      fq: [
+        firstName:Joe,
+        lastName:Doe
+      ]
+}
+```
+Please also refer to [Use of Indexes](#44-use-of-indexes) above.
+
+
+#### 4.5.2. Modified Pair
+This criteria:
+
+```javascript
+Model.find({age: {'>': 18, 'lessThanOrEqual': 65});
+```
+Created request params:
+```
+params: {
+      q: "*:*",
+      fq: [
+        age:[18 TO 65]
+      ]
+}
+```
+Please also refer to [Use of Indexes](#44-use-of-indexes) above.
+and supported operations are as follows:
+
+| Operation              | Shorthand | Supported |
+|:-----------------------|:---------:|:---------:|
+| `'lessThan'`           |  `'<'`    |    Yes    |
+| `'lessThanOrEqual'`    |  `'<='`   |    Yes    |
+| `'greaterThan'`        |  `'>'`    |    Yes    |
+| `'greaterThanOrEqual'` |  `'>='`   |    Yes    |
+| `'not'`                |  `'!'`    |  **No**   |
+| `'like'`               |  `none`   |  **No**   |
+| `'contains'`           |  `none`   |  **No**   |
+| `'startsWith'`         |  `none`   |  **No**   |
+| `'endsWith'`           |  `none`   |  **No**   |
+| `'between'`            |  `none`   |  **Solr** |
+
+    
+#### 4.5.3. In Pairs
+This criteria:
+
+```javascript
+Model.find({title: ['Mr', 'Mrs']});
+```
+Created request params:
+```
+params: {
+      q: title:(Mr Mrs),
+}
+```
+> **Note:** that `IN` criterion works differently in Apache Cassandra. It is
+> subject of [certain limitations] and is considered a pattern to be avoided.
+
+[certain limitations]: http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/select_r.html?scroll=reference_ds_d35_v2q_xj__selectIN
+
+
+#### 4.5.4. Not-In Pair
+**Not supported** since Apache Cassandra does not support `NOT IN` criterion,
+so this construct:
+
+```javascript
+Model.find({name: {'!': ['Walter', 'Skyler']}});
+```
+
+will cause adapter to throw an exception.
+
+
+#### 4.5.5. Or Pairs
+**Not supported** since Apache Cassandra has no `OR` criterion, so this construct:
+
+```javascript
+Model.find({
+  or : [
+    {name: 'walter'},
+    {occupation: 'teacher'}
+  ]
+});
+```
+
+will cause the adapter to throw an exception.
+
+#### 4.5.6. Limit, Sort, Skip
+Only `limit` is curently implemented and works as expected. `sort` and `skip` are
+not supported and silently ignored if provided.
+
+
+
+
 
 >TODO:
 >Specify the interfaces this adapter will support.
@@ -113,7 +423,7 @@ $ npm test
 
 
 
-
+ -->
 ### Questions?
 
 See [`FAQ.md`](./FAQ.md).
@@ -122,23 +432,15 @@ See [`FAQ.md`](./FAQ.md).
 
 ### More Resources
 
-- [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [#sailsjs on Freenode](http://webchat.freenode.net/) (IRC channel)
-- [Twitter](https://twitter.com/sailsjs)
-- [Professional/enterprise](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
-- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#where-do-i-get-help)
-- <a href="http://sailsjs.org" target="_blank" title="Node.js framework for building realtime APIs."><img src="https://github-camo.global.ssl.fastly.net/9e49073459ed4e0e2687b80eaf515d87b0da4a6b/687474703a2f2f62616c64657264617368792e6769746875622e696f2f7361696c732f696d616765732f6c6f676f2e706e67" width=60 alt="Sails.js logo (small)"/></a>
+- [Solr](http://stackoverflow.com/questions/tagged/sails.js)
+- [solr-hyperquest-client](http://webchat.freenode.net/) (IRC channel)
+- [Waterline](https://twitter.com/sailsjs)
+- [Sails](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
 
 
 ### License
 
 **[MIT](./LICENSE)**
-&copy; 2014 [balderdashy](http://github.com/balderdashy) & [contributors]
-[Mike McNeil](http://michaelmcneil.com), [Balderdash](http://balderdash.co) & contributors
 
-[Sails](http://sailsjs.org) is free and open-source under the [MIT License](http://sails.mit-license.org/).
-
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails-solr/README.md)
 
 
