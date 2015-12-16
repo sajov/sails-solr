@@ -129,7 +129,7 @@ find a user:
 | schema               | true       | allow `migrate` [drop, alter](https://github.com/balderdashy/sails-docs/blob/master/concepts/ORM/model-settings.md#migrate) schema [manage schema](https://cwiki.apache.org/confluence/display/solr/Managed+Schema+Definition+in+SolrConfig)                                  |
 | single               | false       |  force `manageCores` to create a core for each model                                 |
 | fieldTypeMap         | fieldTypes  |  [Field Type Map](#field-type-map)                                 |
-| useFqParam           | true        |  foce query mapping as `fq=name:foo`param                                |
+| useFqParam           | true        |  force query mapping as `fq=name:foo` param                                |
 | debugAdapter         | false       |                                   |
 | debugCollection      | false       |                                   |
 | debugQuery           | false       |                                   |
