@@ -11,9 +11,10 @@ Strict adherence to an adapter specification enables the (re)use of built-in gen
 
 ## Table of Contents
 
-* [Supported Interfaces](#supported-interfaces)
 * [Installation](#installation)
-* [Getting Started](introduction/getting-started.md)
+* [Getting Started](introduction/getting-started-with-waterline-solr.md)
+* [Supported Interfaces](#supported-interfaces)
+* [Special Interfaces](#special-interfaces)
 * [Models](models/models.md)
   * [Data types & attribute properties](models/data-types-attributes.md)
   * [Configuration](models/configuration.md)
@@ -28,31 +29,6 @@ Strict adherence to an adapter specification enables the (re)use of built-in gen
 * [Roadmap](ROADMAP.md)
 * [Contributing](CONTRIBUTING.md)
 
-### Supported Interfaces
-> Implements:
-> - [Semantic](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#semantic-interface)
->   - .create()
->   - .createEach()
->   - .find()
->   - .count()
->   - .update()
->   - .destroy()
-> - [Queryable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)[![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema)
-> - [Migratable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)
->   - .define()
->   - .describe()
->   - .drop()
-> - [Iterable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#iterable-interface)
->   - .stream()
-> - Non-standard
->   - .query()
-
-| Repo          |  Build Status (edge)                  |  Latest Stable Version   |
-|---------------|---------------------------------------|--------------------------|
-| [**solr-hyperquest-client**](http://github.com/sajov/solr-hyperquest-client) | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) | [![Coverage Status](https://coveralls.io/repos/sajov/solr-hyperquest-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/solr-hyperquest-client?branch=master)
-[![Dependency Status](https://david-dm.org/sajov/solr-hyperquest-client.svg)](https://david-dm.org/jsdoc2md/solr-hyperquest-client) |
-
-
 ### Installation
 
 To install this adapter, run:
@@ -66,6 +42,7 @@ To install/start solr if you not have one running
 ```
 make kickstart
 ```
+> **Note**: not recommended for production systems! see [Solr installation Tomcat](http://cwiki.solr.com/) for more
 
 #### Configuring Connections
 Add the `solr` configuration to the `config/connections.js` file. The basic
@@ -85,7 +62,7 @@ module.exports.connections = {
 ```
 
 > **Note**: you can define multiple solr connections/cores.
-> By default waterline-solr will run multiple multiple models inside one core `anageCores`. [Connection Options](#connection-options)
+> By default waterline-solr will run multiple multiple models inside one core `manageCores`. [Connection Options](#connection-options)
 
 #### Configuring Models
 And then change default model configuration to the config/models.js:
@@ -111,11 +88,58 @@ find a user:
   User.findOne({name:'foo'},console);
   User.findByName('foo',console);
 ```
-> **Note**: See Waterline Documentation 
-> - [Query Language](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-language.md)
-> - [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
+> **Note**: See Waterline Documentation [Query Language](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-language.md) and [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
 
 
+#### Special Adapter Interfaces
+search suggestion for Autocompleter:
+```
+  User.suggest({name:'foo'},console);
+```
+
+spellcheck given phrase. Known as "Did You Mean: `foo`?":
+```
+  User.spellcheck({name:'foo'},console);
+```
+
+get Layerd Navigaten. Well known as filter. You get `facet` elements for `strings` and `min,max,avg` to build `range slider elemets. [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
+```
+  User.layerdnav({name:'foo'},console);
+```
+
+### Supported Interfaces
+> Implements:
+> - [Semantic](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#semantic-interface)
+>   - .create()
+>   - .createEach()
+>   - .find()
+>   - .count()
+>   - .update()
+>   - .destroy()
+> - [Queryable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)[![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema)
+> - [Migratable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)
+>   - .define()
+>   - .describe()
+>   - .drop()
+> - [Iterable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#iterable-interface)
+>   - .stream()
+> - Non-standard
+>   - .query()
+
+### Secial Interfaces
+> Suggest:
+>   - .suggest()
+>   - .createEach()
+>   - 
+> Spellcheck:
+>   - .spellcheck()
+> Layered Navigation:
+>   - .layerdnavigation()
+
+| Repo          |  Build Status (edge)                  |  Latest Stable Version   |
+|---------------|---------------------------------------|--------------------------|
+| [**solr-hyperquest-client**](http://github.com/sajov/solr-hyperquest-client) | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) | [![Coverage Status](https://coveralls.io/repos/sajov/solr-hyperquest-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/solr-hyperquest-client?branch=master)
+[![Dependency Status](https://david-dm.org/sajov/solr-hyperquest-client.svg)](https://david-dm.org/jsdoc2md/solr-hyperquest-client) |
 
 
 
@@ -130,6 +154,7 @@ find a user:
 | single               | false       |  force `manageCores` to create a core for each model                                 |
 | fieldTypeMap         | fieldTypes  |  [Field Type Map](#field-type-map)                                 |
 | useFqParam           | true        |  force query mapping as `fq=name:foo` param                                |
+| schemaDefaultFieldTypes| {}|                                   |
 | debugAdapter         | false       |                                   |
 | debugCollection      | false       |                                   |
 | debugQuery           | false       |                                   |
