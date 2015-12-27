@@ -23,7 +23,7 @@ var package = {};
 var interfaces = [
     // "semantic", //18,35  32/20     => 53!!!
     // "migratable", //8,14  8,14     14/??   19/1   21/1    =>  22!!!!
-    "queryable", //5,91  7/89   9/87  22/77  23/73    46/?    48/23
+    "queryable", //5,91  7/89   9/87  22/77  23/73    46/?    48/23       56/15
     // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
 ];
@@ -96,7 +96,11 @@ new TestRunner({
         // reporter: 'list',
         bail: false,
         failOnError: false,
-        // grep: /update/,
+        grep: [
+            /should min multiple keys/,
+            /should min and average/
+        ]
+        // grep: /should min multiple keys/,
         // grep: /teardown and migrate existing data/,
         // grep: /auto-increment/,
         // grep: ['teardown and migrate existing data', 'auto-increment', 'PK']
