@@ -96,10 +96,8 @@ new TestRunner({
         // reporter: 'list',
         bail: false,
         failOnError: false,
-        grep: [
-            /should min multiple keys/,
-            /should min and average/
-        ]
+        grep: /(should error if not given any calculations to do|should allow match query with groupBy|should group by keys and both sum and average values|should group by multiple keys and sum values)/
+
         // grep: /should min multiple keys/,
         // grep: /teardown and migrate existing data/,
         // grep: /auto-increment/,
