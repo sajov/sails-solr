@@ -23,7 +23,7 @@ var package = {};
 var interfaces = [
     // "semantic", //18,35  32/20     => 53!!!
     // "migratable", //8,14  8,14     14/??   19/1   21/1    =>  22!!!!
-    "queryable", //5,91  7/89   9/87  22/77  23/73    46/?    48/23       56/15
+    // "queryable", //5,91  7/89   9/87  22/77  23/73    46/?    48/23       56/15
     // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
 ];
@@ -34,17 +34,18 @@ var interfaces = [
 
 var features = [
     // "autoIncrement", // 0/2
-    // "autoIncrement.sequential", // 0/3
-    // "compositePrimaryKey", // 1/1   1/2
-    // "compositeUnique", // 1/1
-    // "crossAdapter", // 25/41
-    // "spatial", // 0/2
-    // "unique", // 0/4
-]; // 25/42     27/54
+    // "autoIncrement.sequential", // 0/3   0/5
+    // "compositePrimaryKey", // 1/1   1/2          2!!!!!
+    // "compositeUnique", // 1/1                     2!!!
+    // "crossAdapter", // 25/41     38/38
+    // "spatial", // 0/2   0/3
+    // "unique", // 0/4   1/3
+]; // 25/42     27/54   46/31
 // features = [];
 try {
-    // package = require('../../package.json');
-    // interfaces = package['waterlineAdapter'].interfaces; //35/113
+    package = require('../../package.json');
+    features = package['waterlineAdapter'].features; //35/113
+    interfaces = package['waterlineAdapter'].interfaces; //35/113
 } catch (e) {
     throw new Error(
         '\n' +
@@ -96,22 +97,8 @@ new TestRunner({
         // reporter: 'list',
         bail: false,
         failOnError: false,
-        grep: /(should error if not given any calculations to do|should allow match query with groupBy|should group by keys and both sum and average values|should group by multiple keys and sum values)/
-
-        // grep: /should min multiple keys/,
-        // grep: /teardown and migrate existing data/,
-        // grep: /auto-increment/,
-        // grep: ['teardown and migrate existing data', 'auto-increment', 'PK']
-        // grep: ['primaryKey', 'auto-increment', 'PK']
-        // grep: /create/,
-        // grep: /createEach/,
-        // grep: /destroy/,
-        // grep: /find/,
-        // grep: /findOne/,
-        // grep: /findOreCreate/,
-        // grep: /findOreCreateEach/,
-        // skip: /teardown and migrate existing data/
-        // skip: /should insert 2 records verififed by find/
+        //TODO:
+        grep: /(should group by keys and sum values|should error if not given any calculations to do|should allow match query with groupBy|should group by keys and both sum and average values|should group by multiple keys and sum values)/
     },
 
     mochaChainableMethods: {
