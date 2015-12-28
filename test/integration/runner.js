@@ -21,8 +21,8 @@ var Adapter = require('../../solrAdapter');
 // Grab targeted interfaces from this adapter's `package.json` file:
 var package = {};
 var interfaces = [
-    "semantic", //18,35  32/20     => 53!!!
-    "migratable", //8,14  8,14     14/??   19/1   21/1    =>  22  !!!!
+    // "semantic", //18,35  32/20     => 53!!!
+    // "migratable", //8,14  8,14     14/??   19/1   21/1    =>  22!!!!
     // "queryable", //5,91  7/89   9/87  22/77  23/73    46/?    48/23       56/15
     // "associations", //8,14  25/45   33/23|28/28
     // "sql" //6,1  6/1
@@ -32,19 +32,64 @@ var interfaces = [
 // 2 pending
 // 204 failing 187
 
+var failedTests = {
+    'should error if not given any calculations to do':'',
+    'should allow match query with groupBy':'',
+    'should group by keys and sum values': '',
+    'should group by keys and both sum and average values':'',
+    'should return correct user':'',
+    'endsWith dynamic attribute':'',
+    'startsWith dynamic attribute':'',
+    'should have \[attribute\]EndsWith\(\) method':'',
+    'should have \[attribute\]StartsWith\(\) method':'interfaces/queryable/modifiers/startsWith.modifier.test.js',
+    'should group by multiple keys and sum values': '',
+    'should return the user with the correct name':'interfaces/queryable/modifiers/contains.modifier.test.js',
+    'should work correctly when OR is used with multiple contains modifiers': 'interfaces/queryable/modifiers/or.modifier.test.js',
+    'should work with multi-level criteria options inside the OR criteria': 'interfaces/queryable/modifiers/or.modifier.test.js',
+    'should work correctly when OR is used with AND': 'interfaces/queryable/modifiers/or.modifier.test.js',
+    'should return a model instance':'interfaces/queryable/modifiers/in.modifier.test.js',
+    'should return the user with the given name':'interfaces/queryable/modifiers/like.modifier.test.js',
+    'should support wrapping both sides with a % sign':'interfaces/queryable/modifiers/like.modifier.test.js',
+    'should retain the data when bootstrapped the second time':'interfaces/migratable/migrate.alter.test.js',
+    'should have the proper migrate setting when bootstrapping':'interfaces/migratable/migrate.alter.test.js',
+    'should return records with symbolic usage > usage':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage > usage when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage > usage when searching strings':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage >= usage when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage >= usage when searching strings':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage <= usage when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with lessThanOrEqual key when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage < usage when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with lessThan key when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with symbolic usage < usage':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with lessThan key':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with greaterThan key':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with greaterThan key when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with greaterThan key when searching strings':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with greaterThanOrEqual key when searching dates':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+    'should return records with greaterThanOrEqual key when searching strings':'interfaces/queryable/modifiers/greaterThan.modifier.test.js',
+}
+
+console.log(Object.keys(failedTests).join('|'));
+
 var features = [
     // "autoIncrement", // 0/2
-    // "autoIncrement.sequential", // 0/3
-    // "compositePrimaryKey", // 1/1   1/2
-    // "compositeUnique", // 1/1
-    // "crossAdapter", // 25/41
-    // "spatial", // 0/2
-    // "unique", // 0/4
-]; // 25/42     27/54
+    // "autoIncrement.sequential", // 0/3   0/5
+    // "compositePrimaryKey", // 1/1   1/2          2!!!!!
+    // "compositeUnique", // 1/1                     2!!!
+    // "crossAdapter", // 25/41     38/38
+    // "spatial", // 0/2   0/3
+    // "unique", // 0/4   1/3
+]; // 25/42     27/54   46/31
 // features = [];
 try {
-    // package = require('../../package.json');
-    // interfaces = package['waterlineAdapter'].interfaces; //35/113
+    package = require('../../package.json');
+    // features = package['waterlineAdapter'].features; //35/113
+    interfaces = package['waterlineAdapter'].interfaces; //136/30
+
+    // 137 passing (8s)
+    // 28 failing
+
 } catch (e) {
     throw new Error(
         '\n' +
@@ -59,10 +104,8 @@ log.info('Running `waterline-adapter-tests` against ' + interfaces.length + ' in
 log.info('( ' + interfaces.join(', ') + ' )');
 log.info('Running `waterline-adapter-tests` against ' + features.length + ' features...');
 log.info('( ' + features.join(', ') + ' )');
-console.log();
 log('Latest draft of Waterline adapter interface spec:');
 log('http://links.sailsjs.org/docs/plugins/adapters/interfaces');
-console.log();
 
 /**
  * Integration Test Runner
@@ -96,20 +139,8 @@ new TestRunner({
         // reporter: 'list',
         bail: false,
         failOnError: false,
-        // grep: /update/,
-        // grep: /teardown and migrate existing data/,
-        // grep: /auto-increment/,
-        // grep: ['teardown and migrate existing data', 'auto-increment', 'PK']
-        // grep: ['primaryKey', 'auto-increment', 'PK']
-        // grep: /create/,
-        // grep: /createEach/,
-        // grep: /destroy/,
-        // grep: /find/,
-        // grep: /findOne/,
-        // grep: /findOreCreate/,
-        // grep: /findOreCreateEach/,
-        // skip: /teardown and migrate existing data/
-        // skip: /should insert 2 records verififed by find/
+        //TODO:
+        grep: '(' + Object.keys(failedTests).join('|') + ')'
     },
 
     mochaChainableMethods: {

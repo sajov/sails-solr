@@ -62,7 +62,7 @@ module.exports.connections = {
 ```
 
 > **Note**: you can define multiple solr connections/cores.
-> By default waterline-solr will run multiple multiple models inside one core `manageCores`. [Connection Options](#connection-options)
+> By default waterline-solr will run multiple models inside one core `manageCores`. [Connection Options](#connection-options)
 
 #### Configuring Models
 And then change default model configuration to the config/models.js:
@@ -126,7 +126,7 @@ get Layerd Navigaten. Well known as filter. You get `facet` elements for `string
 > - Non-standard
 >   - .query()
 
-### Secial Interfaces
+### Special Interfaces
 > Suggest:
 >   - .suggest()
 >   - .createEach()
