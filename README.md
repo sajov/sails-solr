@@ -50,7 +50,7 @@ options are as follows:
 
 ```javascript
 module.exports.connections = {
-  solr-connection-one: {
+  solrConnectionOne: {
     module : 'waterline-solr',
     host: 'localhost',
     port: 8983,
@@ -68,7 +68,7 @@ module.exports.connections = {
 And then change default model configuration to the config/models.js:
 ```
 module.exports.models = {
-  connection: 'solr-connection-one',
+  connection: 'solrConnectionOne',
   attributes: {
     name:'string'
     ...
