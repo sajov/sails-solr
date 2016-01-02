@@ -45,7 +45,12 @@
     "type": "solr",
     "interfaces": [
       "semantic",
+      "migratable",
       "queryable"
+    ],
+    "features": [
+      "compositePrimaryKey",
+      "compositeUnique"
     ],
     "waterlineVersion": "~0.10.0"
   }
