@@ -4,10 +4,9 @@
 
 Provides easy access to `solr` from Sails.js & Waterline.
 
-This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.  Not just databases-- external APIs, proprietary web services, or even hardware.
+This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.  
 
-Strict adherence to an adapter specification enables the (re)use of built-in generic test suites, standardized documentation, reasonable expectations around the API for your users, and overall, a more pleasant development experience for everyone.
-
+The main goal is a simple usage and integration of a full managaged Solr. 
 
 ## Table of Contents
 
@@ -37,12 +36,12 @@ $ npm install waterline-solr
 ```
 
 
-### Getting started with waterline-solr
+#### Getting started with waterline-solr
 To install/start solr if you not have one running
 ```
 make kickstart
 ```
-> **Note**: not recommended for production systems! see [Solr installation Tomcat](http://cwiki.solr.com/) for more
+> **Note**: not recommended for production systems! [Solr installation Tomcat](http://cwiki.solr.com/) for more
 
 #### Configuring Connections
 Add the `solr` configuration to the `config/connections.js` file. The basic

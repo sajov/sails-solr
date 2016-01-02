@@ -3,7 +3,7 @@
 module.exports = function (sails) {
     var blueprints = [
         "suggest",
-        "browse"
+        "catalog"
     ];
 
     var hook = {
@@ -39,8 +39,13 @@ module.exports = function (sails) {
                     if (models.indexOf(controllerId) === -1) {
                         continue;
                     }
-
+                    // console.log('solr controllerIdcontrollerIdcontrollerIdcontrollerIdcontrollerId',controller, controllerId,blueprints[i]);
+                console.log('solr controllerIdcontrollerIdcontrollerIdcontrollerIdcontrollerId', controllerId,blueprints[i]);
                     _bindRoute("get /" + controllerId + "/" + blueprints[i], blueprints[i], {
+                        model: controllerId,
+                        blueprint: blueprints[i]
+                    });
+                     _bindRoute("get /" + controllerId + "/" + blueprints[i] + "/:id", blueprints[i], {
                         model: controllerId,
                         blueprint: blueprints[i]
                     });

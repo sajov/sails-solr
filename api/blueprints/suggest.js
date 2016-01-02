@@ -53,7 +53,7 @@ module.exports = function suggest (req, res) {
         res.ok(data);
     })
   } else {
-    res.err('dfdsf');
+    res.err('Solr.suggest error');
   }
 
 };
