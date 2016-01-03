@@ -24,7 +24,8 @@ var interfaces = [
     "semantic",
     "migratable",
 ];
-
+var features = [
+];
 
 try {
     package = require('../../package.json');
