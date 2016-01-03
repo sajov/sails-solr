@@ -329,6 +329,7 @@ $ npm test
 * more test
 * documentation
 * cleanup and refactoring
+* build an e-commerce like demo application with autocomplete and layerd navigation
 
 
 ## More Resources
