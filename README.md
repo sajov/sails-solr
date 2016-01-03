@@ -6,7 +6,7 @@ Provides easy access to `solr` from Sails.js & Waterline.
 
 This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.  
 
-The main goal is a simple usage and integration of a full managaged Solr. 
+The main goal is a simple usage and integration of a full managed Solr. 
 
 [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr)
 [![Coverage Status](https://coveralls.io/repos/sajov/sails-solr/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/sails-solr?branch=master)
