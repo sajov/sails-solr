@@ -45,8 +45,7 @@
     "type": "solr",
     "interfaces": [
       "semantic",
-      "migratable",
-      "queryable"
+      "migratable"
     ],
     "features": [
       "compositePrimaryKey",
