@@ -1,6 +1,6 @@
 ![](http://i.imgur.com/RIvu9.png | width=50)
 
-# <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png"width="100"/> waterline-solr
+# <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png"width="100"/> sails-solr
 
 Provides easy access to `solr` from Sails.js & Waterline.
 
@@ -8,49 +8,35 @@ This module is a Waterline/Sails adapter, an early implementation of a rapidly-d
 
 The main goal is a simple usage and integration of a full managaged Solr. 
 
-## Table of Contents
+[![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client)
+[![Coverage Status](https://coveralls.io/repos/sajov/solr-hyperquest-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/solr-hyperquest-client?branch=master)
+[![Dependency Status](https://david-dm.org/sajov/solr-hyperquest-client.svg)](https://david-dm.org/jsdoc2md/solr-hyperquest-client)
 
-* [Installation](#installation)
-* [Getting Started](introduction/getting-started-with-waterline-solr.md)
-* [Supported Interfaces](#supported-interfaces)
-* [Special Interfaces](#special-interfaces)
-* [Models](models/models.md)
-  * [Data types & attribute properties](models/data-types-attributes.md)
-  * [Configuration](models/configuration.md)
-* [Queries](queries/query.md)
-  * [Query Language](queries/query-language.md)
-  * [Query Methods](queries/query-methods.md)
-* [How Solr is used](#how-solr-is-used)
-* [Testing](testing/testing.md)
-* [Integration](integration/integration.md)
-  * [Sails](integration/sails.md)
-* [Examples](examples/examples.md)
-* [Roadmap](ROADMAP.md)
-* [Contributing](CONTRIBUTING.md)
+[![NPM](https://nodei.co/npm/solr-hyperquest-client.png?downloads=true&stars=true)](https://nodei.co/npm/solr-hyperquest-client/)
 
-### Installation
+## Installation
 
 To install this adapter, run:
 ```sh
-$ npm install waterline-solr
+$ npm install sails-solr
 ```
 
 
-#### Getting started with waterline-solr
+## Getting started with sails-solr
 To install/start solr if you not have one running
 ```
 make kickstart
 ```
 > **Note**: not recommended for production systems! [Solr installation Tomcat](http://cwiki.solr.com/) for more
 
-#### Configuring Connections
+### Configuring Connections
 Add the `solr` configuration to the `config/connections.js` file. The basic
 options are as follows:
 
 ```javascript
 module.exports.connections = {
   solrConnectionOne: {
-    module : 'waterline-solr',
+    module : 'sails-solr',
     host: 'localhost',
     port: 8983,
     core: 'schemaless',
@@ -61,9 +47,9 @@ module.exports.connections = {
 ```
 
 > **Note**: you can define multiple solr connections/cores.
-> By default waterline-solr will run multiple models inside one core `manageCores`. [Connection Options](#connection-options)
+> By default sails-solr will run multiple models inside one core `manageCores`. [Connection Options](#connection-options)
 
-#### Configuring Models
+### Configuring Models
 And then change default model configuration to the config/models.js:
 ```
 module.exports.models = {
@@ -76,7 +62,7 @@ module.exports.models = {
 ```
 > **Note**: you can add more model based configuartion [Model Options](#model-options) / [Connection Options](#connection-options)
 
-#### Usage
+### Usage
 create a user:
 ```
   User.create({name:'foo'},console)
@@ -90,59 +76,158 @@ find a user:
 > **Note**: See Waterline Documentation [Query Language](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-language.md) and [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
 
 
-#### Special Adapter Interfaces
-search suggestion for Autocompleter:
+### Special Adapter Interfaces
+#### Autocompleter
+search suggestion and spellchecked phrase. Known as "Did You Mean: `foo`?"
 ```
-  User.suggest({name:'foo'},console);
+  // as sails request  see hooks and blueprint
+  // http://localhost:1337/user/suggest/foa
+
+  // in node
+  User.suggest('foa', console);
+
+  //response 
+  {
+  "responseHeader": {
+    "status": 0,
+    "QTime": 1
+  },
+  "spellcheck": {
+    "suggestions": [
+      "foa",
+      {
+        "numFound": 1,
+        "startOffset": 0,
+        "endOffset": 9,
+        "origFreq": 0,
+        "suggestion": [
+          {
+            "word": "foo",
+            "freq": 1
+          }
+        ]
+      }
+    ],
+    "correctlySpelled": false,
+    "collations": [
+      "collation",
+      "foo"
+    ]
+  },
+  "suggest": {
+    "suggest": {
+      "foa": {
+        "numFound": 2,
+        "suggestions": [
+          {
+            "term": "foo",
+            "weight": 0,
+            "payload": ""
+          },{
+            "term": "foo bar",
+            "weight": 0,
+            "payload": ""
+          }
+        ]
+      }
+    }
+  }
+}
 ```
 
-spellcheck given phrase. Known as "Did You Mean: `foo`?":
+#### Layerd Navigation
+Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to build Options and Range Slider Elemets. [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
 ```
-  User.spellcheck({name:'foo'},console);
+  // as sails request  see hooks and blueprint
+  // http://localhost:1337/user/catalog/?name="*"&limit=3&sort=age asc&skip=0
+
+  // in node
+  User.catalog({name:'foo'},console);
+
+  //response 
+  {
+  "responseHeader":{
+    "status":0,
+    "QTime":1,
+    "params":{
+      "q":"*:*",
+      "indent":"true",
+      "stats":"true",
+      "sort":"percent asc",
+      "rows":"100",
+      "wt":"json",
+      "stats.field":["age",
+        "percent"]}},
+  "response":{"numFound":13,"start":0,"docs":[
+      {
+        "name":"foo",
+        "age":10,
+        "color":"blue",
+        "createdAt":"2015-12-30T23:32:24.755Z",
+        "updatedAt":"2015-12-30T23:32:24.755Z",
+        "id":"612bb75f-be0f-496b-ba51-8e79ee786c50"},
+      {
+        "name":"bar",
+        "age":20,
+        "color":"yellow",
+        "createdAt":"2015-12-30T23:15:09.859Z",
+        "updatedAt":"2015-12-30T23:15:09.859Z",
+        "id":"517a4917-b3b8-4ea0-a3fd-acd41497b6e0"},
+      {
+        "name":"john",
+        "age":30,
+        "color":"black",
+        "createdAt":"2015-12-30T23:15:10.859Z",
+        "updatedAt":"2015-12-30T23:15:10.859Z",
+        "id":"515a4917-b3b8-4ea0-a3fd-acd4149432fd"},
+  },
+  "facet_counts": {
+    "facet_queries": {},
+    "facet_fields": {
+        "name": [
+        {
+          "blue":1},
+        {
+          "yellow":1},
+        {
+          "black":1},
+      ]
+    },
+    "facet_dates": {},
+    "facet_ranges": {},
+    "facet_intervals": {},
+    "facet_heatmaps": {}
+  },
+  "stats":{
+    "stats_fields":{
+      "age":{
+        "min":10.0,
+        "max":30.0,
+        "count":3,
+        "missing":0,
+        "sum":60.0,
+        "sumOfSquares":100,
+        "mean":20,
+        "stddev":10}}}}
 ```
 
-get Layerd Navigaten. Well known as filter. You get `facet` elements for `strings` and `min,max,avg` to build `range slider elemets. [Query Methods](https://github.com/balderdashy/waterline-docs/blob/master/queries/query-methods.md)
-```
-  User.layerdnav({name:'foo'},console);
-```
-
-### Supported Interfaces
-> Implements:
-> - [Semantic](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#semantic-interface)
->   - .create()
->   - .createEach()
->   - .find()
->   - .count()
->   - .update()
->   - .destroy()
-> - [Queryable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)[![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema)
-> - [Migratable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#migratable-interface)
->   - .define()
->   - .describe()
->   - .drop()
-> - [Iterable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md#iterable-interface)
->   - .stream()
-> - Non-standard
->   - .query()
-
-### Special Interfaces
-> Suggest:
->   - .suggest()
->   - .createEach()
->   - 
-> Spellcheck:
->   - .spellcheck()
-> Layered Navigation:
->   - .layerdnavigation()
-
-| Repo          |  Build Status (edge)                  |  Latest Stable Version   |
-|---------------|---------------------------------------|--------------------------|
-| [**solr-hyperquest-client**](http://github.com/sajov/solr-hyperquest-client) | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) | [![Coverage Status](https://coveralls.io/repos/sajov/solr-hyperquest-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/solr-hyperquest-client?branch=master)
-[![Dependency Status](https://david-dm.org/sajov/solr-hyperquest-client.svg)](https://david-dm.org/jsdoc2md/solr-hyperquest-client) |
+## Supported Waterline Interfaces
+| Type       | Methods                                 | Build         |
+|:-----------|:----------------------------------------|:--------------|
+| Semantic   | create, createEach, find, count, update, destroy | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client)    |
+| Migratable | define, describe, drop, alter, addAttributes, remove, attributes, addIndex, removeIndex                      | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
+| Queryable  | where, limit, sort, skip, select        | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
+> **Note**: See [Waterline Documentation](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md)
 
 
+## Special Adapter Interfaces
+| Type       | Methods                                 | Build         |
+|:-----------|:----------------------------------------|:--------------|
+| Suggest    | suggest. Return on Object with suggestions and spellecked the requestet term or phrase | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
+| Catalog   | catalog. Return an Object with matching results and Layered Navigation as `facet` and `stats` | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
 
-## Connection Options
+## Advanced Configuration
+### Connection Options
 | Params               | Default     | Description                       |
 |:---------------------|:------------|:----------------------------------|
 | host                 | 'localhost' |                                   |
@@ -160,7 +245,7 @@ get Layerd Navigaten. Well known as filter. You get `facet` elements for `string
 | debugSolr            | false       |                                   |
 
 
-## Model Options
+### Model Options
 ```
 {
   attributes: {
@@ -181,7 +266,7 @@ get Layerd Navigaten. Well known as filter. You get `facet` elements for `string
 ```
 
 
-## Field Type Map
+### Field Type Map
 The following table represents mappings between Sails/Waterline model data types and Solr field types:
 
 | Sails/Waterline Type | Solr Type    |
@@ -198,6 +283,7 @@ The following table represents mappings between Sails/Waterline model data types
 | binary               | text_general |
 | array                | text_general |
 | json                 | text_general |
+| point                | point        |
 
 
 > **Note**: You can even define your custom mapping as `fieldTypeMap:` inside
@@ -205,7 +291,7 @@ The following table represents mappings between Sails/Waterline model data types
 > If you want a field type explicit mapping use `fieldType` as additional 
 > fieldTypeMapattribute
 
-## Solr default field attributes
+### Solr default field attributes
 The following table represents Solr field attributes:
 
 | Solr Field Attributes    | Default      |
@@ -228,243 +314,34 @@ The following table represents Solr field attributes:
 | required                 | false        |
 | dynamicField             | false        |
 | json                     | text_general |
-| json                     | text_general |
-| json                     | text_general |
-
 
 > **Note**: You can even define your custom field attribute default as `schemaDefaultFieldAttributes:` inside
 > connection settings and as model option.
 > If you want a field attribute explicit you can add this attribute as an additional option inside the Model attribute settings
 
-### Sails/Waterline Model 
-```
-{
-  attributes: {
-    first_name: {
-      type:'string'
-      // Overwrite per Field
-      schemaDefaultFieldAttributes: {
-        indexed: true,
-        type: 'text_de'
-      }
-    }
-  }
-  // Overwrite per Model
-  schemaDefaultFieldAttributes: {
-    indexed: false
-  }
-}
-```
-
-
-
-### 4.4. Use of indexes
-Apache Cassandra require index on a column that is used in `where` clause of
-`select` statement and unlike other database it will produce and exception if
-the index is missing.
-
-Sails/Waterline allows to set `index` or `unique` properties on model
-attributes. The `waterline-solr` adapter will respect these attributes and it
-will create indexes for attributes with `index` or `unique` attributes set to
-`true`.
-
-> **Note**: that solr have no notion of `unique` constraint and
-> the uniqueness has to be enforced either by Sails/Waterline core or in your
-> own code. The `unique` attribute property is considered an alias for `index`
-> and both are treated in the exactly same way.
-
-### 4.5. Search criteria
-Sole only supports subset of operation in selection criteria in
-comparison to relational databases and this section describes what is currently
-supported.
-
-
-#### 4.5.1. Key Pairs
-This is an exact match criteria and it is declared as follows:
-
-```javascript
-Model.find({firstName: 'Joe', lastName: 'Doe'});
-```
-
-Created request params:
-
-```
-params: {
-      q: "*:*",
-      fq: [
-        firstName:Joe,
-        lastName:Doe
-      ]
-}
-```
-Please also refer to [Use of Indexes](#44-use-of-indexes) above.
-
-
-#### 4.5.2. Modified Pair
-This criteria:
-
-```javascript
-Model.find({age: {'>': 18, 'lessThanOrEqual': 65});
-```
-Created request params:
-```
-params: {
-      q: "*:*",
-      fq: [
-        age:[18 TO 65]
-      ]
-}
-```
-Please also refer to [Use of Indexes](#44-use-of-indexes) above.
-and supported operations are as follows:
-
-| Operation              | Shorthand | Supported |
-|:-----------------------|:---------:|:---------:|
-| `'lessThan'`           |  `'<'`    |    Yes    |
-| `'lessThanOrEqual'`    |  `'<='`   |    Yes    |
-| `'greaterThan'`        |  `'>'`    |    Yes    |
-| `'greaterThanOrEqual'` |  `'>='`   |    Yes    |
-| `'not'`                |  `'!'`    |  **No**   |
-| `'like'`               |  `none`   |  **No**   |
-| `'contains'`           |  `none`   |  **No**   |
-| `'startsWith'`         |  `none`   |  **No**   |
-| `'endsWith'`           |  `none`   |  **No**   |
-| `'between'`            |  `none`   |  **Solr** |
-
-    
-#### 4.5.3. In Pairs
-This criteria:
-
-```javascript
-Model.find({title: ['Mr', 'Mrs']});
-```
-Created request params:
-```
-params: {
-      q: title:(Mr Mrs),
-}
-```
-> **Note:** that `IN` criterion works differently in Apache Cassandra. It is
-> subject of [certain limitations] and is considered a pattern to be avoided.
-
-[certain limitations]: http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/select_r.html?scroll=reference_ds_d35_v2q_xj__selectIN
-
-
-#### 4.5.4. Not-In Pair
-**Not supported** since Apache Cassandra does not support `NOT IN` criterion,
-so this construct:
-
-```javascript
-Model.find({name: {'!': ['Walter', 'Skyler']}});
-```
-
-will cause adapter to throw an exception.
-
-
-#### 4.5.5. Or Pairs
-**Not supported** since Apache Cassandra has no `OR` criterion, so this construct:
-
-```javascript
-Model.find({
-  or : [
-    {name: 'walter'},
-    {occupation: 'teacher'}
-  ]
-});
-```
-
-will cause the adapter to throw an exception.
-
-#### 4.5.6. Limit, Sort, Skip
-Only `limit` is curently implemented and works as expected. `sort` and `skip` are
-not supported and silently ignored if provided.
-
-
-
-
-
->TODO:
->Specify the interfaces this adapter will support.
->e.g. `This adapter implements the [semantic]() and [queryable]() interfaces.`
-> For more information, check out this repository's [FAQ](./FAQ.md) and the [adapter interface reference](https://github.com/balderdashy/sails-docs/blob/master/adapter-specification.md) in the Sails docs.
-
-
-### Development
-
-Check out **Connections** in the Sails docs, or see the `config/connections.js` file in a new Sails project for information on setting up adapters.
-
-## Getting started
-It's usually pretty easy to add your own adapters for integrating with proprietary systems or existing open APIs.  For most things, it's as easy as `require('some-module')` and mapping the appropriate methods to match waterline semantics.  To get started:
-
-1. Fork this repository
-2. Set up your `README.md` and `package.json` file.  Sails.js adapter module names are of the form sails-*, where * is the name of the datastore or service you're integrating with.
-3. Build your adapter.
-
-
-
-
-### Running the tests
-
-Configure the interfaces you plan to support (and targeted version of Sails/Waterline) in the adapter's `package.json` file:
-
-```javascript
-{
-  //...
-  "sails": {
-  	"adapter": {
-	    "sailsVersion": "~0.10.0",
-	    "implements": [
-	      "semantic",
-	      "queryable"
-	    ]
-	  }
-  }
-}
-```
-
-In your adapter's directory, run:
-
+## Running the tests
 ```sh
 $ npm test
 ```
 
 
-## Publish your adapter
-
-> You're welcome to write proprietary adapters and use them any way you wish--
-> these instructions are for releasing an open-source adapter.
-
-1. Create a [new public repo](https://github.com/new) and add it as a remote (`git remote add origin git@github.com:yourusername/sails-youradaptername.git)
-2. Make sure you attribute yourself as the author and set the license in the package.json to "MIT".
-3. Run the tests one last time.
-4. Do a [pull request to sails-docs](https://github.com/balderdashy/sails-docs/compare/) adding your repo to `data/adapters.js`.  Please let us know about any special instructions for usage/testing.
-5. We'll update the documentation with information about your new adapter
-6. Then everyone will adore you with lavish praises.  Mike might even send you jelly beans.
-
-7. Run `npm version patch`
-8. Run `git push && git push --tags`
-9. Run `npm publish`
+## TODO:
+* more test
+* documentation
+* cleanup and refactoring
+* build an e-commerce like demo application with autocomplete and layerd navigation
 
 
-
- -->
-### Questions?
-
-See [`FAQ.md`](./FAQ.md).
-
+## More Resources
+- [Solr](https://cwiki.apache.org/confluence/display/solr/Apache+Solr+Reference+Guide)
+- [Waterline](https://github.com/balderdashy/waterline)
+- [Sails](http://sailsjs.org/)
 
 
-### More Resources
-
-- [Solr](http://stackoverflow.com/questions/tagged/sails.js)
-- [solr-hyperquest-client](http://webchat.freenode.net/) (IRC channel)
-- [Waterline](https://twitter.com/sailsjs)
-- [Sails](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
-
-
-### License
-
+## License
 **[MIT](./LICENSE)**
+
+
 
 
 
