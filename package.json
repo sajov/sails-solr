@@ -1,7 +1,7 @@
 {
   "name": "sails-solr",
   "version": "0.1.1",
-  "description": "Solr Adapter for Sails / Waterline",
+  "description": "Solr Adapter for Sails / Waterline sds",
   "main": "solrAdapter.js",
   "directories": {
     "test": "test"
@@ -34,7 +34,7 @@
     "lodash": "^3.8.0",
     "md5": "^2.0.0",
     "node-uuid": "^1.4.3",
-    "solr-hyperquest-client": "^1.0.5"
+    "solr-hyperquest-client": "^1.0.8"
   },
   "devDependencies": {
     "waterline-adapter-tests": "~0.10.0",
