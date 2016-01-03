@@ -4,7 +4,7 @@ REPORTER = spec
 XML_FILE = reports/TEST-all.xml
 HTML_FILE = reports/coverage.html
 
-test: test-mocha
+test: test-integration
 
 test-mocha:
 	@NODE_ENV=test mocha \
@@ -13,7 +13,8 @@ test-mocha:
 		test/integration/runner.js
 
 test-integration:
-	@NODE_ENV=test node test/integration/runner.js
+	@NODE_ENV=test node \
+		test/integration/runner.js
 
 test-cov: istanbul
 
