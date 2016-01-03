@@ -3,19 +3,26 @@ TESTS = test
 REPORTER = spec
 XML_FILE = reports/TEST-all.xml
 HTML_FILE = reports/coverage.html
+MOCHA_OPTS= --check-leaks
+
 
 test: test-integration
-
-test-integration:
-	@NODE_ENV=test node test/integration/runner.js
-
-
 
 test-mocha:
 	@NODE_ENV=test mocha \
 	    --timeout 25000 \
 		--reporter $(REPORTER) \
-		integration/runner -R spec -b
+		test/integration/runner.js
+
+test-integration:
+	@NODE_ENV=test node \
+		test/integration/runner.js
+
+test-load:
+	@NODE_ENV=test ./node_modules/.bin/mocha \
+		--reporter $(REPORTER) \
+		$(MOCHA_OPTS) \
+		test/load/**
 
 test-cov: istanbul
 

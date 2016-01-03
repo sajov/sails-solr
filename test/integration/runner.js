@@ -79,13 +79,14 @@ new TestRunner({
     // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
     mocha: {
         // reporter: 'list',
+        timeout: 25000,
         bail: false,
         failOnError: false,
     },
 
     mochaChainableMethods: {
         // inverts the above grep
-        invert: true,
+        // invert: true,
     },
 
     // Return code != 0 if any test failed
