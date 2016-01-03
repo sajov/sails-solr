@@ -47,10 +47,6 @@
       "semantic",
       "migratable"
     ],
-    "features": [
-      "compositePrimaryKey",
-      "compositeUnique"
-    ],
     "waterlineVersion": "~0.10.0"
   }
 }

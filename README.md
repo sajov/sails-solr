@@ -8,11 +8,11 @@ This module is a Waterline/Sails adapter, an early implementation of a rapidly-d
 
 The main goal is a simple usage and integration of a full managaged Solr. 
 
-[![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client)
-[![Coverage Status](https://coveralls.io/repos/sajov/solr-hyperquest-client/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/solr-hyperquest-client?branch=master)
-[![Dependency Status](https://david-dm.org/sajov/solr-hyperquest-client.svg)](https://david-dm.org/jsdoc2md/solr-hyperquest-client)
+[![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr)
+[![Coverage Status](https://coveralls.io/repos/sajov/sails-solr/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/sails-solr?branch=master)
+[![Dependency Status](https://david-dm.org/sajov/sails-solr.svg)](https://david-dm.org/jsdoc2md/sails-solr)
 
-[![NPM](https://nodei.co/npm/solr-hyperquest-client.png?downloads=true&stars=true)](https://nodei.co/npm/solr-hyperquest-client/)
+[![NPM](https://nodei.co/npm/sails-solr.png?downloads=true&stars=true)](https://nodei.co/npm/sails-solr/)
 
 ## Installation
 
@@ -214,17 +214,17 @@ Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to
 ## Supported Waterline Interfaces
 | Type       | Methods                                 | Build         |
 |:-----------|:----------------------------------------|:--------------|
-| Semantic   | create, createEach, find, count, update, destroy | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client)    |
-| Migratable | define, describe, drop, alter, addAttributes, remove, attributes, addIndex, removeIndex                      | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
-| Queryable  | where, limit, sort, skip, select        | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
+| Semantic   | create, createEach, find, count, update, destroy | [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr)    |
+| Migratable | define, describe, drop, alter, addAttributes, remove, attributes, addIndex, removeIndex                      | [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr) |
+| Queryable  | where, limit, sort, skip, select        | [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr) |
 > **Note**: See [Waterline Documentation](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md)
 
 
 ## Special Adapter Interfaces
 | Type       | Methods                                 | Build         |
 |:-----------|:----------------------------------------|:--------------|
-| Suggest    | suggest. Return on Object with suggestions and spellecked the requestet term or phrase | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
-| Catalog   | catalog. Return an Object with matching results and Layered Navigation as `facet` and `stats` | [![Build Status](https://travis-ci.org/sajov/solr-hyperquest-client.svg?branch=master)](https://travis-ci.org/sajov/solr-hyperquest-client) |
+| Suggest    | suggest. Return on Object with suggestions and spellecked the requestet term or phrase | [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr) |
+| Catalog   | catalog. Return an Object with matching results and Layered Navigation as `facet` and `stats` | [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr) |
 
 ## Advanced Configuration
 ### Connection Options
