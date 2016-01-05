@@ -2,9 +2,9 @@
 
 # <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png"width="100"/> sails-solr
 
-Provides easy access to `solr` from Sails.js & Waterline.
+Provides easy access to `solr` from [Sails.js](https://github.com/balderdashy/sails) & [Waterline](https://github.com/balderdashy/waterline/blob/master/README.md).
 
-This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.
+This module is a [Sails](https://github.com/balderdashy/sails)/[Waterline](https://github.com/balderdashy/waterline/blob/master/README.md) adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.
 
 The main goal is a simple usage and integration of a full managed Solr.
 
@@ -13,6 +13,21 @@ The main goal is a simple usage and integration of a full managed Solr.
 [![Dependency Status](https://david-dm.org/sajov/sails-solr.svg)](https://david-dm.org/jsdoc2md/sails-solr)
 
 [![NPM](https://nodei.co/npm/sails-solr.png?downloads=true&stars=true)](https://nodei.co/npm/sails-solr/)
+
+## Features
+- [Waterline](https://github.com/balderdashy/waterline/blob/master/README.md) interface support for [Semantic, Migratable and Queryable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md)
+- [Suggester](https://cwiki.apache.org/confluence/display/solr/Suggester) and [Spell checking](https://cwiki.apache.org/confluence/display/solr/Spell+Checking) for Autocomplete as Model Method and Shadow Route Action
+- Catalog with Layerd Navigation (Range and Facet Filter) as Model Method and Shadow Route Action
+- Solr [Config API](https://cwiki.apache.org/confluence/display/solr/Config+API) full solrconfig management
+  - add, update SearchComponents
+  - add, update RequestHandler
+- Solr [Schema API](https://cwiki.apache.org/confluence/display/solr/Schema+API) full schema management
+  - add, update fieldTypes
+  - add, update Fields
+  - add, update dynamicFields
+  - add, update copyFields
+- Multi Model at single Core
+- Raw solr-hyperquest-client access
 
 ## Installation
 
