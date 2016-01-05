@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node test/integration/runner -R spec -b",
+    "test": "istanbul cover test/integration/runner.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
@@ -38,10 +38,11 @@
     "solr-hyperquest-client": "^1.0.8"
   },
   "devDependencies": {
-    "waterline-adapter-tests": "~0.10.0",
-    "mocha": "*",
     "captains-log": "~0.11.0",
-    "coveralls": "^2.11.4"
+    "coveralls": "^2.11.4",
+    "mocha": "*",
+    "mocha-lcov-reporter": "^1.0.0",
+    "waterline-adapter-tests": "~0.10.0"
   },
   "waterlineAdapter": {
     "type": "solr",
