@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node test/integration/runner -R spec -b"
+    "test": "node test/integration/runner -R spec -b",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
     "waterline-adapter-tests": "~0.10.0",
     "mocha": "*",
     "captains-log": "~0.11.0",
-    "coveralls": "^2.11.4",
+    "coveralls": "^2.11.4"
   },
   "waterlineAdapter": {
     "type": "solr",
