@@ -4,9 +4,9 @@
 
 Provides easy access to `solr` from Sails.js & Waterline.
 
-This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.  
+This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.
 
-The main goal is a simple usage and integration of a full managed Solr. 
+The main goal is a simple usage and integration of a full managed Solr.
 
 [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr)
 [![Coverage Status](https://coveralls.io/repos/sajov/sails-solr/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/sails-solr?branch=master)
@@ -86,7 +86,7 @@ search suggestion and spellchecked phrase. Known as "Did You Mean: `foo`?"
   // in node
   User.suggest('foa', console);
 
-  //response 
+  //response
   {
   "responseHeader": {
     "status": 0,
@@ -144,7 +144,7 @@ Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to
   // in node
   User.catalog({name:'foo'},console);
 
-  //response 
+  //response
   {
   "responseHeader":{
     "status":0,
@@ -233,6 +233,8 @@ Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to
 | host                 | 'localhost' |                                   |
 | port                 | '8983'      |                                   |
 | core                 | 'schemaless'|                                   |
+| solrconfig           | [object](https://github.com/sajov/sails-solr/blob/develop/lib/config/solrconfig.js)| set properties, add|update searchcomponent and
+requesthandler. [Config API](https://cwiki.apache.org/confluence/display/solr/Config+API#ConfigAPI-CommandsforCommonProperties)   |
 | manageCores          | true        | create cores if not exists [CoreAdmin](https://cwiki.apache.org/confluence/display/solr/CoreAdmin+API)                                  |
 | schema               | true       | allow `migrate` [drop, alter](https://github.com/balderdashy/sails-docs/blob/master/concepts/ORM/model-settings.md#migrate) schema [manage schema](https://cwiki.apache.org/confluence/display/solr/Managed+Schema+Definition+in+SolrConfig)                                  |
 | single               | false       |  force `manageCores` to create a core for each model                                 |
@@ -288,7 +290,7 @@ The following table represents mappings between Sails/Waterline model data types
 
 > **Note**: You can even define your custom mapping as `fieldTypeMap:` inside
 > connection settings and as model option.
-> If you want a field type explicit mapping use `fieldType` as additional 
+> If you want a field type explicit mapping use `fieldType` as additional
 > fieldTypeMapattribute
 
 ### Solr default field attributes
