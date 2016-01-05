@@ -233,8 +233,7 @@ Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to
 | host                 | 'localhost' |                                   |
 | port                 | '8983'      |                                   |
 | core                 | 'schemaless'|                                   |
-| solrconfig           | [object](https://github.com/sajov/sails-solr/blob/develop/lib/config/solrconfig.js)| set properties, add and update searchcomponent and
-requesthandler. [Config API](https://cwiki.apache.org/confluence/display/solr/Config+API#ConfigAPI-CommandsforCommonProperties)   |
+| solrconfig           | [object](https://github.com/sajov/sails-solr/blob/develop/lib/config/solrconfig.js)| set properties, add and update searchcomponent and requesthandler. [Config API](https://cwiki.apache.org/confluence/display/solr/Config+API#ConfigAPI-CommandsforCommonProperties)   |
 | manageCores          | true        | create cores if not exists [CoreAdmin](https://cwiki.apache.org/confluence/display/solr/CoreAdmin+API)                                  |
 | schema               | true       | allow `migrate` [drop, alter](https://github.com/balderdashy/sails-docs/blob/master/concepts/ORM/model-settings.md#migrate) schema [manage schema](https://cwiki.apache.org/confluence/display/solr/Managed+Schema+Definition+in+SolrConfig)                                  |
 | single               | false       |  force `manageCores` to create a core for each model                                 |
