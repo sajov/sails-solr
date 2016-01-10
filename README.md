@@ -2,17 +2,32 @@
 
 # <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png"width="100"/> sails-solr
 
-Provides easy access to `solr` from Sails.js & Waterline.
+Provides easy access to `solr` from [Sails.js](https://github.com/balderdashy/sails) & [Waterline](https://github.com/balderdashy/waterline/blob/master/README.md).
 
-This module is a Waterline/Sails adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.  
+This module is a [Sails](https://github.com/balderdashy/sails)/[Waterline](https://github.com/balderdashy/waterline/blob/master/README.md) adapter, an early implementation of a rapidly-developing, tool-agnostic data standard.  Its goal is to provide a set of declarative interfaces, conventions, and best-practices for integrating with all sorts of data sources.
 
-The main goal is a simple usage and integration of a full managed Solr. 
+The main goal is a simple usage and integration of a full managed Solr.
 
 [![Build Status](https://travis-ci.org/sajov/sails-solr.svg?branch=master)](https://travis-ci.org/sajov/sails-solr)
 [![Coverage Status](https://coveralls.io/repos/sajov/sails-solr/badge.svg?branch=master&service=github)](https://coveralls.io/github/sajov/sails-solr?branch=master)
 [![Dependency Status](https://david-dm.org/sajov/sails-solr.svg)](https://david-dm.org/jsdoc2md/sails-solr)
 
 [![NPM](https://nodei.co/npm/sails-solr.png?downloads=true&stars=true)](https://nodei.co/npm/sails-solr/)
+
+## Features
+- [Waterline](https://github.com/balderdashy/waterline/blob/master/README.md) interface support for [Semantic, Migratable and Queryable](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md)
+- [Suggester](https://cwiki.apache.org/confluence/display/solr/Suggester) and [Spell checking](https://cwiki.apache.org/confluence/display/solr/Spell+Checking) for Autocomplete as Model Method and Shadow Route Action
+- Catalog with Layerd Navigation (Range and Facet Filter) as Model Method and Shadow Route Action
+- Solr [Config API](https://cwiki.apache.org/confluence/display/solr/Config+API) full solrconfig management
+  - add, update SearchComponents
+  - add, update RequestHandler
+- Solr [Schema API](https://cwiki.apache.org/confluence/display/solr/Schema+API) full schema management
+  - add, update fieldTypes
+  - add, update Fields
+  - add, update dynamicFields
+  - add, update copyFields
+- Multi Model at single Core
+- Raw solr-hyperquest-client access
 
 ## Installation
 
@@ -86,7 +101,7 @@ search suggestion and spellchecked phrase. Known as "Did You Mean: `foo`?"
   // in node
   User.suggest('foa', console);
 
-  //response 
+  //response
   {
   "responseHeader": {
     "status": 0,
@@ -144,7 +159,7 @@ Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to
   // in node
   User.catalog({name:'foo'},console);
 
-  //response 
+  //response
   {
   "responseHeader":{
     "status":0,
@@ -233,6 +248,7 @@ Well known as filter. `facet` for `strings` and `min,max,avg`  for `ìnteger` to
 | host                 | 'localhost' |                                   |
 | port                 | '8983'      |                                   |
 | core                 | 'schemaless'|                                   |
+| solrconfig           | [object](https://github.com/sajov/sails-solr/blob/develop/lib/config/solrconfig.js)| set properties, add and update searchcomponent and requesthandler. [Config API](https://cwiki.apache.org/confluence/display/solr/Config+API#ConfigAPI-CommandsforCommonProperties)   |
 | manageCores          | true        | create cores if not exists [CoreAdmin](https://cwiki.apache.org/confluence/display/solr/CoreAdmin+API)                                  |
 | schema               | true       | allow `migrate` [drop, alter](https://github.com/balderdashy/sails-docs/blob/master/concepts/ORM/model-settings.md#migrate) schema [manage schema](https://cwiki.apache.org/confluence/display/solr/Managed+Schema+Definition+in+SolrConfig)                                  |
 | single               | false       |  force `manageCores` to create a core for each model                                 |
@@ -288,7 +304,7 @@ The following table represents mappings between Sails/Waterline model data types
 
 > **Note**: You can even define your custom mapping as `fieldTypeMap:` inside
 > connection settings and as model option.
-> If you want a field type explicit mapping use `fieldType` as additional 
+> If you want a field type explicit mapping use `fieldType` as additional
 > fieldTypeMapattribute
 
 ### Solr default field attributes
