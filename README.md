@@ -1,4 +1,4 @@
-![](http://i.imgur.com/RIvu9.png | width=50)
+![](http://i.imgur.com/RIvu9.png|width=50)
 
 # <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png" width="100"/> sails-solr
 
