@@ -1,6 +1,10 @@
+# DEPRECATED
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 ![](http://i.imgur.com/RIvu9.png|width=50)
 
-# <img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png" width="100"/> sails-solr
+<img src="http://lucene.apache.org/solr/assets/identity/Solr_Logo_on_white.png" width="100"/> sails-solr
 
 Provides easy access to `solr` from [Sails.js](https://github.com/balderdashy/sails) & [Waterline](https://github.com/balderdashy/waterline/blob/master/README.md).
 
